@@ -1,0 +1,56 @@
+<div class="row">
+  <app-header></app-header>
+</div>
+<div class="container">
+  
+  <div class="row">
+<div [hidden]="allTasks.length>0" class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+    <span class="sr-only">45% Complete</span>
+  </div>
+</div>
+<div class="input-group">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+      <input type="text" (keyup)="0" #input1 class="form-control" placeholder="Search for...">
+    </div>
+  </div>
+  <br/>
+<div class="row">
+  <!---->
+<table class="table">
+  <thead>
+    <th style="display: none"></th>
+    <th>Id</th>
+    <th>Nome</th>
+    <th>Matrícula</th>
+    <th>Situação</th>
+    <th>Ação</th>
+  </thead>
+  <!---->
+<tr *ngFor="let item of (allTasks|filter:input1.value|paginate: { itemsPerPage: 10, currentPage: page }  )">
+  <td style="display: none">
+      <input   type="checkbox" (change)="checkbox(item)">
+    </td>
+  <td>{{item.Id}}</td>
+  <td>{{item.Title}}</td>
+  <td>{{item.Matricula}}</td>
+    <td><span [ngClass]="{'donestatus': item.Status=='Aprovado','pendingstatus': item.Status=='Reprovado'}" >{{item.Status}}</span></td>
+    
+    <td>
+       <button  (click)='updateStatus(item)' type="button" class="btn btn-default" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                          </button>
+                           <button (click)='deleteStatus(item)' type="button" class="btn btn-default" aria-label="Left Align">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                          </button>
+    </td>
+</tr>
+</table>
+<button (click)="deleteAll()" style="display: none">Click</button>
+<div class="has-text-centered">
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+</div>
+</div>
+</div>
